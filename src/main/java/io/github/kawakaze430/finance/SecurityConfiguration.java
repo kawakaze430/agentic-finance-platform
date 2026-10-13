@@ -34,7 +34,7 @@ public class SecurityConfiguration {
             }))
             .headers(h->h.contentSecurityPolicy(c->c.policyDirectives("default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'")))
             .authorizeHttpRequests(a->a
-                .requestMatchers("/","/index.html","/app.js","/styles.css","/favicon.svg","/actuator/health","/error").permitAll()
+                .requestMatchers("/","/index.html","/app.js","/styles.css","/favicon.svg","/actuator/health","/actuator/health/**","/error").permitAll()
                 .requestMatchers("/actuator/**","/api/outbox/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST,"/api/invoices/*/approve","/api/invoices/*/reject","/api/reconciliation/matches").hasAnyRole("APPROVER","ADMIN")
                 .requestMatchers(HttpMethod.POST,"/api/ledger/journals").hasRole("ADMIN")
