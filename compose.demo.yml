@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports: ["127.0.0.1:8080:8080"]
+    environment:
+      SPRING_PROFILES_ACTIVE: demo
+      AGENT_MODE: ${AGENT_MODE:-demo}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.1:8b}
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    volumes: ["demo-data:/app/data"]
+volumes:
+  demo-data:
