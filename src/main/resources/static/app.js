@@ -2,7 +2,7 @@
 const $ = id => document.getElementById(id);
 let credential = null, actor = null, selected = null, page = 0, totalPages = 0, currency = "INR", busy = false;
 const pendingKeys = new Map();
-const money = value => new Intl.NumberFormat(undefined,{style:"currency",currency,maximumFractionDigits:2}).format(Number(value));
+const money = value => new Intl.NumberFormat(undefined,{style:"currency",currency,maximumFractionDigits:2}).format(value);
 function node(tag, text, className) { const el=document.createElement(tag); if(text!=null)el.textContent=String(text);if(className)el.className=className;return el; }
 function notice(text) { $("notice").textContent=text;$("notice").hidden=!text; }
 async function api(path, body) {
