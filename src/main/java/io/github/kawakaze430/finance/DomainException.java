@@ -2,6 +2,7 @@ package io.github.kawakaze430.finance;
 
 import org.springframework.http.HttpStatus;
 public class DomainException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
     final HttpStatus status;
     final String code;
     public DomainException(HttpStatus status, String code, String message) {
