@@ -113,9 +113,6 @@ by eventId: delivery is at least once, including after a publish/commit crash wi
 node --check src/main/resources/static/app.js
 ```
 
-An optional `ecj` build profile supports a Java 17 runtime without javac:
-`./mvnw -Pecj verify`. Normal development and CI use the JDK compiler.
-
 The prepared Git history uses the owner's GitHub-linked noreply identity.
 From an authenticated owner checkout, `scripts/publish.sh` verifies the account,
 runs checks, creates a **new public** repository, and pushes the existing history.
