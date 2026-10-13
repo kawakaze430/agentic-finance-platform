@@ -1,5 +1,6 @@
 name: Verify
 on:
+  workflow_dispatch:
   push:
     branches: [main]
   pull_request:
@@ -23,3 +24,28 @@ jobs:
       - run: ./mvnw -B -ntp verify
       - run: node --check src/main/resources/static/app.js
       - run: docker build -t agentic-finance-platform:ci .
+      - name: Start the packaged demo
+        run: docker run -d --name finance-smoke -p 8080:8080 -e SPRING_PROFILES_ACTIVE=demo agentic-finance-platform:ci
+      - name: Wait for the packaged application
+        run: |
+          python3 - <<'PY'
+          import time, urllib.request
+          deadline = time.monotonic() + 120
+          while time.monotonic() < deadline:
+              try:
+                  with urllib.request.urlopen('http://localhost:8080/actuator/health', timeout=3) as response:
+                      if response.status == 200:
+                          break
+              except (OSError, TimeoutError):
+                  pass
+              time.sleep(2)
+          else:
+              raise SystemExit('Packaged application did not become healthy')
+          PY
+      - name: Verify the packaged invoice workflow
+        run: python3 scripts/smoke.py
+      - name: Inspect and remove the demo container
+        if: always()
+        run: |
+          docker logs finance-smoke || true
+          docker rm -f finance-smoke || true
