@@ -1,0 +1,58 @@
+# Supply finance-secrets and a reachable PostgreSQL database before applying.
+# Build/push the image and replace the image reference with your actual digest.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: finance-config
+data:
+  SPRING_PROFILES_ACTIVE: prod
+  DATABASE_URL: jdbc:postgresql://postgres:5432/finance
+  DATABASE_USERNAME: finance
+  AGENT_MODE: demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finance-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: finance-api}
+  template:
+    metadata:
+      labels: {app: finance-api}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+      containers:
+        - name: api
+          image: ghcr.io/kawakaze430/agentic-finance-platform:1.0.0
+          ports: [{containerPort: 8080}]
+          envFrom:
+            - configMapRef: {name: finance-config}
+            - secretRef: {name: finance-secrets}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 250m, memory: 512Mi}
+            limits: {cpu: '1', memory: 1Gi}
+          startupProbe:
+            httpGet: {path: /actuator/health/liveness, port: 8080}
+            failureThreshold: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: {path: /actuator/health/liveness, port: 8080}
+          readinessProbe:
+            httpGet: {path: /actuator/health/readiness, port: 8080}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: finance-api
+spec:
+  selector: {app: finance-api}
+  ports: [{port: 8080, targetPort: 8080}]
+  type: ClusterIP
