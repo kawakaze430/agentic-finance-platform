@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+finance:
+  seed-demo: false
+  users:
+    analyst-password: ${FINANCE_ANALYST_PASSWORD}
+    approver-password: ${FINANCE_APPROVER_PASSWORD}
+    admin-password: ${FINANCE_ADMIN_PASSWORD}
