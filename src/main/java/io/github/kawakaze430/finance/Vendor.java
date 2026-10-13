@@ -8,6 +8,8 @@ public class Vendor {
     @Id UUID id = UUID.randomUUID();
     @Column(nullable=false) Instant createdAt;
     public Vendor() {}
+public UUID getId() { return id; }
+public String getName() { return name; }
 
 @Column(nullable=false,length=120) String name;
 @Column(nullable=false,length=200) String email;

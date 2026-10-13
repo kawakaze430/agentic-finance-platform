@@ -18,6 +18,6 @@ public class Invoice {
 @Column(nullable=false,length=100) String createdBy;
 @Column(length=500) String decisionReason;
 @Version long version;
-InvoiceView view() { return new InvoiceView(id,vendor.id,vendor.name,reference,amount,currency,dueDate,status,createdBy,version); }
+InvoiceView view() { return new InvoiceView(id,vendor.getId(),vendor.getName(),reference,amount,currency,dueDate,status,createdBy,version); }
 
 }
