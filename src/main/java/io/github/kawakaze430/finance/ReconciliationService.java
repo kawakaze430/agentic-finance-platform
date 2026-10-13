@@ -17,7 +17,7 @@ public class ReconciliationService {
         var invoice=invoices.lockById(request.invoiceId()).orElseThrow(()->DomainException.missing("Invoice"));
         if(invoice.status!=InvoiceStatus.APPROVED) throw DomainException.conflict("Settlement requires a human-approved invoice");
         var transaction=bank.lockById(request.bankTransactionId()).orElseThrow(()->DomainException.missing("Bank transaction"));
-        if(transaction.matched()) throw DomainException.conflict("Bank transaction is already matched");
+        if(transaction.matched) throw DomainException.conflict("Bank transaction is already matched");
         if(ReconciliationScorer.score(invoice.view(),transaction.view()).score()!=100) throw DomainException.invalid("Settlement requires exact amount, currency, invoice reference, and counterparty");
         var match=new ReconciliationMatch();match.invoiceId=invoice.id;match.bankTransactionId=transaction.id;match.matchedBy=actor;match.createdAt=clock.instant();
         matches.saveAndFlush(match);transaction.matched=true;invoice.status=InvoiceStatus.PAID;bank.save(transaction);invoices.saveAndFlush(invoice);ledger.recordSettlement(invoice,actor);
