@@ -2,6 +2,16 @@
 
 Verified on 13 October 2026 against the prepared source:
 
+The public repository is
+[kawakaze430/agentic-finance-platform](https://github.com/kawakaze430/agentic-finance-platform).
+[GitHub Actions run 38446563496](https://github.com/kawakaze430/agentic-finance-platform/actions/runs/38446563496)
+passed on source revision `88893c9e64e944e5a5e877c8190c89999d5746aa`:
+Java 17 compilation and packaging, 79 tests, JavaScript syntax, Docker image
+build, container startup and health, and the live invoice workflow smoke.
+The smoke verified agent evidence, human approval, exact settlement, and a
+balanced ledger using fictional records. Subsequent validation-note edits do
+not change the tested application or workflow.
+
 - 79 automated tests passed, with zero failures, errors, or skipped tests.
 - Tests cover exact money, currencies, idempotency, authorization, double-entry
   journals, concurrent approval, settlement evidence, agent boundaries, model
@@ -19,11 +29,10 @@ Limits of this validation:
   binary and its browser download returned a non-archive response.
 - No real Ollama model was downloaded or benchmarked. Ollama protocol tests used
   an embedded HTTP stub; the live application smoke used the labeled demo mode.
-- Docker, PostgreSQL, Kafka and Kubernetes deployment templates were not executed.
-- Maven packaging completed, but a subsequent packaged-JAR launch encountered
-  an empty/truncated nested ZIP in this environment. The source/classpath runtime
-  passed; packaged-container validation remains for a normal JDK/Docker runner.
-- GitHub CI has not run because a remote repository has not yet been created.
+- PostgreSQL, Kafka and Kubernetes deployment templates were not executed.
+- The local workspace encountered a truncated nested ZIP when launching a
+  packaged JAR. GitHub CI subsequently rebuilt the JAR in the Docker image and
+  successfully started it and ran the live HTTP smoke on a standard runner.
 
-The source archive includes the complete Git history, not runtime databases,
-credentials, dependency caches, generated binaries, or browser screenshots.
+Runtime databases, credentials, dependency caches, generated binaries, and
+browser screenshots are excluded from version control.

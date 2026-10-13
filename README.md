@@ -106,18 +106,18 @@ docker compose -f compose.yml -f compose.kafka.yml up --build
 The Kafka configuration is a local, single-broker example. Consumers must deduplicate
 by eventId: delivery is at least once, including after a publish/commit crash window.
 
-## Verify and publish
+## Verification
 
 ```sh
 ./mvnw verify
 node --check src/main/resources/static/app.js
 ```
 
-The prepared Git history uses the owner's GitHub-linked noreply identity.
-From an authenticated owner checkout, `scripts/publish.sh` verifies the account,
-runs checks, creates a **new public** repository, and pushes the existing history.
-It refuses to modify an existing repository. Commit author attribution does not
-control every authenticated-app or push-activity label that GitHub displays.
+GitHub Actions runs the 79 Java tests, JavaScript syntax check, Docker build,
+container startup, and a live HTTP smoke covering agent evidence, human approval,
+exact settlement and a balanced ledger. The workflow can also be run manually
+from Actions. See [validation evidence and remaining limits](docs/VALIDATION.md)
+for the successful build and what has not been tested with live integrations.
 
 ## Scope and next improvements
 
